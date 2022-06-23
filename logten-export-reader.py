@@ -63,12 +63,24 @@ df_new_logbook.loc[((df_logbook_import[' flight_night'] > 0) &  (df_logbook_impo
 
 # df_new_logbook.insert(8,"SE Dual Day", se_dual_day)
 
-sum_se_day_pic = df_new_logbook['SE ICUS Day'].sum(axis=0)
-sum_se_night_pic = df_new_logbook['SE ICUS Night'].sum(axis=0)
-sum_se_day_dual = df_new_logbook['SE Dual Day'].sum(axis=0)
-sum_se_night_dual = df_new_logbook['SE Dual Night'].sum(axis=0)
+sum_se_day_icus = df_new_logbook['SE ICUS Day'].sum(axis=0)
+sum_se_night_icus = df_new_logbook['SE ICUS Night'].sum(axis=0)
+sum_se_day_dual = df_new_logbook['SE Dual Day'].sum(axis=0)     #missing 0.6 from when night was entered in same line
+sum_se_night_dual = df_new_logbook['SE Dual Night'].sum(axis=0) #printing correctly
 
-print("SE ICUS Day", round(sum_se_day_pic,2))
-print("SE ICUS Night", round(sum_se_night_pic,2))
+print("SE ICUS Day", round(sum_se_day_icus,2))
+print("SE ICUS Night", round(sum_se_night_icus,2))
 print("SE Dual Day", round(sum_se_day_dual,2))
 print("SE Dual Night", round(sum_se_night_dual,2))
+
+hours = {
+    "single_engine": {
+        "ICUS Day": sum_se_day_icus,
+        "ICUS Night": sum_se_night_icus,
+        },
+    "multi_engine":{
+        }
+        }
+
+print(hours)
+
