@@ -24,33 +24,33 @@ df_new_logbook.insert(7,"Airports Visited", route)
  # aircraftType_selectedAircraftClass = 'Single-Engine'
  
 # ICUS DAY
-# and  df_logbook_import['aircraftType_selectedAircraftClass']
-df_new_logbook.loc[(pd.isna(df_logbook_import[' flight_night']) and  df_logbook_import['aircraftType_selectedAircraftClass']), 'SE ICUS Day'] = df_logbook_import[' flight_p1us']
+df_new_logbook.loc[(pd.isna(df_logbook_import[' flight_night']) &  (df_logbook_import[' aircraftType_selectedAircraftClass'] == 'Single-Engine Land')), 'SE ICUS Day'] = df_logbook_import[' flight_p1us']
 
 # ICUS NIGHT
-df_new_logbook.loc[df_logbook_import['Night'] > 0, 'SE ICUS Night'] = df_logbook_import['P1u/s']
+df_new_logbook.loc[((df_logbook_import[' flight_night'] > 0) &  (df_logbook_import[' aircraftType_selectedAircraftClass'] == 'Single-Engine Land')), 'SE ICUS Night'] = df_logbook_import[' flight_p1us']
 
 # DUAL DAY
-df_new_logbook.loc[pd.isna(df_logbook_import['Night']), 'SE Dual Day'] = df_logbook_import['flight_dualReceived']
+df_new_logbook.loc[(pd.isna(df_logbook_import[' flight_night']) &  (df_logbook_import[' aircraftType_selectedAircraftClass'] == 'Single-Engine Land') & (df_logbook_import[' flight_dualReceived'] > 0)), 'SE Dual Day'] = df_logbook_import[' flight_dualReceived']
 
 # DUAL NIGHT
-df_new_logbook.loc[df_logbook_import['Night'] > 0, 'SE Dual Night'] = df_logbook_import['flight_dualReceived']
+df_new_logbook.loc[((df_logbook_import[' flight_night'] > 0) &  (df_logbook_import[' aircraftType_selectedAircraftClass'] == 'Single-Engine Land') & (df_logbook_import[' flight_dualReceived'] > 0)), 'SE Dual Night'] = df_logbook_import[' flight_night']
 
 # PIC DAY
-df_new_logbook.loc[pd.isna(df_logbook_import['Night']), 'SE PIC Day'] = df_logbook_import['PIC']
+df_new_logbook.loc[(pd.isna(df_logbook_import[' flight_night']) &  (df_logbook_import[' aircraftType_selectedAircraftClass'] == 'Single-Engine Land')), 'SE PIC Day'] = df_logbook_import[' flight_pic']
 
 # PIC NIGHT
-df_new_logbook.loc[df_logbook_import['Night'] > 0, 'SE PIC Night'] = df_logbook_import['PIC']
+df_new_logbook.loc[((df_logbook_import[' flight_night'] > 0) &  (df_logbook_import[' aircraftType_selectedAircraftClass'] == 'Single-Engine Land')), 'SE PIC Night'] = df_logbook_import[' flight_pic']
 
 # CO-PILOT DAY
-df_new_logbook.loc[pd.isna(df_logbook_import['Night']), 'SE Copilot Day'] = df_logbook_import['SIC']
+# df_new_logbook.loc[pd.isna(df_logbook_import['Night']), 'SE Copilot Day'] = df_logbook_import['SIC']
+# co_pilot_day = 
 
 # CO-PILOT NIGHT
-df_new_logbook.loc[df_logbook_import['Night'] > 0, 'SE Copilot Night'] = df_logbook_import['SIC']
+# df_new_logbook.loc[df_logbook_import['Night'] > 0, 'SE Copilot Night'] = df_logbook_import['SIC']
 
 # MULTI ENGINE TIMES
 # ICUS DAY
-df_new_logbook.loc[pd.isna(df_logbook_import['Night']), 'ME ICUS Day'] = df_logbook_import['P1u/s']
+# df_new_logbook.loc[pd.isna(df_logbook_import['Night']), 'ME ICUS Day'] = df_logbook_import['P1u/s']
 
 # ICUS NIGHT
 # DUAL DAY
@@ -62,3 +62,13 @@ df_new_logbook.loc[pd.isna(df_logbook_import['Night']), 'ME ICUS Day'] = df_logb
 
 
 # df_new_logbook.insert(8,"SE Dual Day", se_dual_day)
+
+sum_se_day_pic = df_new_logbook['SE ICUS Day'].sum(axis=0)
+sum_se_night_pic = df_new_logbook['SE ICUS Night'].sum(axis=0)
+sum_se_day_dual = df_new_logbook['SE Dual Day'].sum(axis=0)
+sum_se_night_dual = df_new_logbook['SE Dual Night'].sum(axis=0)
+
+print("SE ICUS Day", round(sum_se_day_pic,2))
+print("SE ICUS Night", round(sum_se_night_pic,2))
+print("SE Dual Day", round(sum_se_day_dual,2))
+print("SE Dual Night", round(sum_se_night_dual,2))
